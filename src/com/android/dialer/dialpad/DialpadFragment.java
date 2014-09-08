@@ -224,6 +224,10 @@ public class DialpadFragment extends Fragment
     /** Identifier for the "Add Call" intent extra. */
     private static final String ADD_CALL_MODE_KEY = "add_call_mode";
 
+    /** Identifier for the "Add Participant" intent extra. */
+    private static final String ADD_PARTICIPANT_KEY = "add_participant";
+    private boolean mAddParticipant = false;
+
     /**
      * Identifier for intent extra for sending an empty Flash message for
      * CDMA networks. This message is used by the network to simulate a
@@ -555,6 +559,9 @@ public class DialpadFragment extends Fragment
                 }
 
             }
+        } else {
+            mAddParticipant = intent.getBooleanExtra(ADD_PARTICIPANT_KEY, false);
+            ((HostInterface) getActivity()).setConferenceDialButtonVisibility(true);
         }
         showDialpadChooser(needToShowDialpadChooser);
         setStartedFromNewIntent(false);
@@ -1207,6 +1214,7 @@ public class DialpadFragment extends Fragment
                         // must be dial conference add extra
                         intent.putExtra(TelephonyProperties.EXTRA_DIAL_CONFERENCE_URI, true);
                     }
+                    intent.putExtra(ADD_PARTICIPANT_KEY, mAddParticipant);
                     DialerUtils.startActivityWithErrorToast(getActivity(), intent);
                     hideAndClearDialpad(false);
                 }
